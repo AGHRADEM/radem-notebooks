@@ -1,2 +1,6 @@
+# Python and jupyter cache
 __pycache__
-data/*.tar.gz
+.ipynb_checkpoints
+
+# Data and build folders
+data
