@@ -10,6 +10,7 @@ import subprocess
 import sys
 import os
 import pathlib
+import time
 import pandas as pd
 from dataclasses import dataclass
 from datetime import datetime
@@ -18,6 +19,10 @@ if os.environ.get('CDF_LIB', '') == '':
     print('No CDF_LIB environment variable found for CDF file processing.')
     sys.exit(1)
 from spacepy import pycdf
+
+
+DATA_RAW_DIR = '../data_raw'
+DATA_PROCESSED_DIR = '../data_processed'
 
 
 @dataclass
@@ -43,38 +48,36 @@ def parse_type(filename: str) -> str:
     return 'science' if filename[8:10] == 'sc' else 'housekeeping'
 
 
-def to_dataframe(cdf: pycdf.CDF) -> pd.DataFrame:
-    # Read electron channels
-    electron_df = pd.concat([
-        pd.DataFrame({
-            "time": pd.to_datetime(str(time)),
-            "event_type": 'e',
-            "channel": list(cdf["ELECTRON_BINS"]),
-            "value": electrons
-        }) for electrons, time in zip(cdf["ELECTRONS"], cdf["TIME_UTC"])
-    ])
+def to_dataframe(cdf, i=-1):
+    print(f"Processing CDF {i}...")
 
-    # Read proton channels
-    proton_df = pd.concat([
-        pd.DataFrame({
-            "time": pd.to_datetime(str(time)),
-            "event_type": 'p',
-            "channel": list(cdf["PROTON_BINS"]),
-            "value": protons
-        }) for protons, time in zip(cdf["PROTONS"], cdf["TIME_UTC"])
-    ])
+    # Helper function to preprocess data
+    def prepare_data(event_type, value_key, bin_key, times):
+        bins = cdf[bin_key][...]
+        values = cdf[value_key][...]
+        times = pd.to_datetime(times)  # Adjust unit as necessary
 
-    # Read DD channels
-    dd_df = pd.concat([
-        pd.DataFrame({
-            "time": pd.to_datetime(str(time)),
-            "event_type": 'd',
-            "channel": list(cdf["DD_BINS"]),
-            "value": dd
-        }) for dd, time in zip(cdf["DD"], cdf["TIME_UTC"])
-    ])
+        # Generate records for DataFrame construction
+        records = []
+        for time, value_row in zip(times, values):
+            for channel, value in zip(bins, value_row):
+                records.append({
+                    "time": time,
+                    "event_type": event_type,
+                    "channel": channel,
+                    "value": value
+                })
+        return records
 
-    df = pd.concat([electron_df, proton_df, dd_df])
+    # Prepare data for each event type
+    electron_records = prepare_data(
+        'e', 'ELECTRONS', 'ELECTRON_BINS', cdf['TIME_UTC'])
+    proton_records = prepare_data(
+        'p', 'PROTONS', 'PROTON_BINS', cdf['TIME_UTC'])
+    dd_records = prepare_data('d', 'DD', 'DD_BINS', cdf['TIME_UTC'])
+
+    # Combine all records into a single DataFrame
+    df = pd.DataFrame(electron_records + proton_records + dd_records)
     df['channel'] = df['channel'].astype("category")
     df['event_type'] = df['event_type'].astype("category")
 
@@ -82,47 +85,64 @@ def to_dataframe(cdf: pycdf.CDF) -> pd.DataFrame:
 
 
 def pipeline():
-    if 0 != subprocess.call("mkdir -p ../data",
+    if 0 != subprocess.call(f"mkdir -p {DATA_RAW_DIR}",
                             shell=True):
         print("Error creating data directory", file=sys.stderr)
         return
 
     # Fetch data
-    if 0 != subprocess.call("wget -r --user=ifjagh --ask-password ftp://ftptrans.psi.ch/to_radem/ -nd -np -P ../data/",
+    if 0 != subprocess.call(f"wget -r --timestamping --continue --user=ifjagh --ask-password ftp://ftptrans.psi.ch/to_radem/ -nd -np -P {DATA_RAW_DIR}",
                             shell=True):
         print("Error fetching data", file=sys.stderr)
         return
 
-    # Extracts all tar files from data/ directory
-    if 0 != subprocess.call('for f in ../data/*.tar.gz; do tar -xvf "$f" -C ../data/; done;',
+    # Create temp data directory
+    temp_dir = f'../data_tmp_{str(int(time.time()))}'
+    if 0 != subprocess.call(f"mkdir -p {temp_dir}",
+                            shell=True):
+        print(f"Error creating {temp_dir} directory", file=sys.stderr)
+        return
+
+    # Extracts all tar files
+    if 0 != subprocess.call(f'for f in {DATA_RAW_DIR}/*.tar.gz; do tar -xvf "$f" -C {temp_dir}; done;',
                             shell=True):
         print("Error extracting tar files", file=sys.stderr)
         return
 
-    # Remove tar.gz files and all non-raw data
-    if 0 != subprocess.call('find ../data -maxdepth 1 -type f -delete',
-                            shell=True):
-        print("Error removing tar files", file=sys.stderr)
-        return
-
+    # Data processing
     cdfs = [
         RawCDF(name=path.name,
                date=parse_date(path.name),
                tpe=parse_type(path.name),
                data=pycdf.CDF(str(path)))
-        for path in pathlib.Path('../data').rglob('*.cdf')
+        for path in pathlib.Path(f'{temp_dir}').rglob('*.cdf')
     ]
 
     science_cdfs = [cdf for cdf in cdfs if cdf.tpe == 'science']
 
-    df = pd.concat([to_dataframe(cdf.data)
-                    for _, cdf in enumerate(science_cdfs)])
+    print(f"{len(science_cdfs)} CDFs found. Get a coffee because this may take a while...")
 
-    df.to_hdf('../data/preprocessed.h5', key='time', format="table")
-    df.to_csv('../data/preprocessed.csv', index=False)
+    df = pd.concat([to_dataframe(cdf.data, i)
+                    for i, cdf in enumerate(science_cdfs)])
 
-    df = pd.read_hdf('../data/preprocessed.h5')
-    print(df)
+    # Saving data
+    # Create temp data directory
+    if 0 != subprocess.call(f"mkdir -p {DATA_PROCESSED_DIR}",
+                            shell=True):
+        print(
+            f"Error creating {DATA_PROCESSED_DIR} directory", file=sys.stderr)
+        return
+
+    df.to_hdf(f'{DATA_PROCESSED_DIR}/preprocessed.h5',
+              key='time', format="table")
+    df.to_csv(f'{DATA_PROCESSED_DIR}/preprocessed.csv', index=False)
+
+    # Remove tmp data files
+    if 0 != subprocess.call(f'rm -rd {temp_dir}',
+                            shell=True):
+        print(f"Error removing {temp_dir}", file=sys.stderr)
+        return
+
     print("DONE")
 
 
