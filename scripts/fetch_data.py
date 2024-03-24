@@ -147,6 +147,10 @@ def process_data(source_dir: str) -> pd.DataFrame:
     return df
 
 
+def filter_data(df: pd.DataFrame) -> None:
+    df.query("time >= '2023-09-01'", inplace=True)
+
+
 def save_csv_data(df: pd.DataFrame, target_dir: str, file_without_ext: str):
     df.to_csv(f'{target_dir}/{file_without_ext}.csv', index=False)
 
@@ -158,20 +162,22 @@ def save_hdf_data(df: pd.DataFrame, target_dir: str, file_without_ext: str):
 
 def pipeline():
     try:
+        temp_dir = pathlib.Path(f'../data_tmp_{int(time.time())}')
+        if not make_dir(temp_dir):
+            return
+
         if not make_dir(DATA_RAW_DIR):
             return
 
         if not fetch_data(DATA_RAW_DIR):
             return
 
-        temp_dir = pathlib.Path(f'../data_tmp_{int(time.time())}')
-        if not make_dir(temp_dir):
-            return
-
         if not extract_data(DATA_RAW_DIR, temp_dir):
             return
 
         df = process_data(temp_dir)
+
+        filter_data(df)
 
         if not make_dir(DATA_PROCESSED_DIR):
             return
