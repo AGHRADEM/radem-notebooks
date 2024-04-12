@@ -11,11 +11,12 @@ import sys
 import os
 import pathlib
 import time
-import pandas as pd
-import numpy as np
 from dataclasses import dataclass
 from datetime import datetime
 import argparse
+from typing import List
+import pandas as pd
+
 
 if os.environ.get('CDF_LIB', '') == '':
     print('No CDF_LIB environment variable found for CDF file processing.')
@@ -30,29 +31,64 @@ OUTPUT_FILE_WITHOUT_EXT = pathlib.Path('preprocessed')
 
 @dataclass
 class RawCDF:
+    """
+    Represents a raw CDF (Common Data Format) file.
+    """
     name: str
     date: datetime
     type_: str
     data: pycdf.CDF
 
     def count_events(self) -> int:
-        # TODO: Rewrite in terms of cdf Vars
+        """
+        Returns the total number of events in the CDF file.
+
+        Returns:
+            int: The total number of events.
+        """
         total_channels = 31 + 9 + 9
         return total_channels * len(self.data["TIME_UTC"])
 
     @staticmethod
     def parse_date(filename: pathlib.Path) -> datetime.date:
-        date_string = filename[-12:-4]
+        """
+        Parses the date from the filename.
+
+        Args:
+            filename (pathlib.Path): The path of the filename.
+
+        Returns:
+            datetime.date: The parsed date.
+        """
+        date_string = str(filename)[-12:-4]
         format_ = '%Y%m%d'
         dt = datetime.strptime(date_string, format_).date()
         return dt
 
     @staticmethod
     def parse_type(filename: pathlib.Path) -> str:
+        """
+        Parses the type from the filename.
+
+        Args:
+            filename (pathlib.Path): The path of the filename.
+
+        Returns:
+            str: The parsed type (science or housekeeping).
+        """
         # FixMe: Non exhaustive match
-        return 'science' if filename[8:10] == 'sc' else 'housekeeping'
+        return 'science' if str(filename)[-15:-13] == 'sc' else 'housekeeping'
 
     def to_dataframe(self, i=-1):
+        """
+        Converts the CDF data to a pandas DataFrame.
+
+        Args:
+            i (int, optional): The index of the CDF file. Defaults to -1.
+
+        Returns:
+            pd.DataFrame: The converted DataFrame.
+        """
         print(f"Processing CDF {i}...")
         cdf = self.data
 
@@ -64,10 +100,10 @@ class RawCDF:
 
             # Generate records for DataFrame construction
             records = []
-            for time, value_row in zip(times, values):
+            for time_, value_row in zip(times, values):
                 for channel, value in zip(bins, value_row):
                     records.append({
-                        "time": time,
+                        "time": time_,
                         "event_type": event_type,
                         "channel": channel,
                         "value": value
@@ -91,18 +127,18 @@ class RawCDF:
         return df
 
 
-def make_dir(dir: pathlib.Path) -> bool:
-    if 0 != subprocess.call(f"mkdir -p {dir}",
+def make_dir(dir_: pathlib.Path) -> bool:
+    if 0 != subprocess.call(f"mkdir -p {dir_}",
                             shell=True):
-        print(f"Error creating {dir} directory", file=sys.stderr)
+        print(f"Error creating {dir_} directory", file=sys.stderr)
         return False
     return True
 
 
-def remove_dir(dir: pathlib.Path) -> bool:
-    if 0 != subprocess.call(f"rm -rd {dir}",
+def remove_dir(dir_: pathlib.Path) -> bool:
+    if 0 != subprocess.call(f"rm -rd {dir_}",
                             shell=True):
-        print(f"Error removing {dir} directory", file=sys.stderr)
+        print(f"Error removing {dir_} directory", file=sys.stderr)
         return False
     return True
 
@@ -131,25 +167,27 @@ def extract_data(source_dir: pathlib.Path, target_dir: pathlib.Path) -> bool:
     return True
 
 
-def process_data(source_dir: pathlib.Path) -> pd.DataFrame:
+def load_data_to_dfs(source_dir: pathlib.Path) -> List[pd.DataFrame]:
     cdfs = [
         RawCDF(name=path.name,
-               date=RawCDF.parse_date(path.name),
-               type_=RawCDF.parse_type(path.name),
+               date=RawCDF.parse_date(path),
+               type_=RawCDF.parse_type(path),
                data=pycdf.CDF(str(path)))
         for path in pathlib.Path(f'{source_dir}').rglob('*.cdf')
     ]
 
     science_cdfs = [cdf for cdf in cdfs if cdf.type_ == 'science']
     science_cdfs.sort(key=lambda cdf: cdf.date)
-    print(science_cdfs)
 
     print(f"{len(science_cdfs)} CDFs found. Get a coffee because this may take a while...")
 
-    A = [cdf.to_dataframe(i)
-         for i, cdf in enumerate(science_cdfs)]
+    dfs = [cdf.to_dataframe(i) for i, cdf in enumerate(science_cdfs)]
 
-    df = pd.concat(A)
+    return dfs
+
+
+def merge_dfs(dfs: List[pd.DataFrame]) -> pd.DataFrame:
+    df = pd.concat(dfs)
     df.sort_values(by=['time', 'event_type', 'channel'], inplace=True)
     return df
 
@@ -158,11 +196,11 @@ def filter_data(df: pd.DataFrame) -> None:
     df.query("time >= '2023-09-01'", inplace=True)
 
 
-def save_csv_data(df: pd.DataFrame, target_dir: pathlib.Path, file_without_ext: str):
+def save_csv_data(df: pd.DataFrame, target_dir: pathlib.Path, file_without_ext: pathlib.Path):
     df.to_csv(f'{target_dir}/{file_without_ext}.csv', index=False)
 
 
-def save_hdf_data(df: pd.DataFrame, target_dir: pathlib.Path, file_without_ext: str):
+def save_hdf_data(df: pd.DataFrame, target_dir: pathlib.Path, file_without_ext: pathlib.Path):
     df.to_hdf(f'{target_dir}/{file_without_ext}.h5',
               key='time', format="table")
 
@@ -174,6 +212,10 @@ def args_parser() -> argparse.Namespace:
                         help='Skip fetching data from PSI FTP server')
     parser.add_argument('--skip-cleanup', action='store_true',
                         help='Skip cleanup of temporary files')
+    parser.add_argument('--merge', action='store_true',
+                        help='Merge all data into a single file')
+    parser.add_argument('--separate', action='store_true',
+                        help='Save each CDF file as a separate file')
     return parser.parse_args()
 
 
@@ -182,7 +224,6 @@ def pipeline(args: argparse.Namespace | None = None):
         args = args_parser()
 
     try:
-        # "../data_tmp_1711394609"
         temp_dir = pathlib.Path(f'../data_tmp_{int(time.time())}')
         if not make_dir(temp_dir):
             return
@@ -194,28 +235,36 @@ def pipeline(args: argparse.Namespace | None = None):
             if not fetch_data(DATA_RAW_DIR):
                 return
 
-        if not extract_data(DATA_RAW_DIR, temp_dir):
-            return
+        if args.separate or args.merge:
+            if not extract_data(DATA_RAW_DIR, temp_dir):
+                return
 
-        df = process_data(temp_dir)
+            dfs = load_data_to_dfs(temp_dir)
 
-        filter_data(df)
+            if not make_dir(DATA_PROCESSED_DIR):
+                return
 
-        if not make_dir(DATA_PROCESSED_DIR):
-            return
+        if args.separate:
+            for idx, df in enumerate(dfs):
+                df.sort_values(
+                    by=['time', 'event_type', 'channel'], inplace=True)
+                save_csv_data(df, DATA_PROCESSED_DIR, pathlib.Path(str(idx)))
 
-        save_csv_data(df, DATA_PROCESSED_DIR, OUTPUT_FILE_WITHOUT_EXT)
-        save_hdf_data(df, DATA_PROCESSED_DIR, OUTPUT_FILE_WITHOUT_EXT)
+        if args.merge:
+            df = merge_dfs(dfs)
+            filter_data(df)
+            save_csv_data(df, DATA_PROCESSED_DIR, OUTPUT_FILE_WITHOUT_EXT)
 
         print("SUCCESS")
     except KeyboardInterrupt:
         print("Interrupted by user")
-        remove_file(f'{DATA_PROCESSED_DIR}/{OUTPUT_FILE_WITHOUT_EXT}.csv')
-        remove_file(f'{DATA_PROCESSED_DIR}/{OUTPUT_FILE_WITHOUT_EXT}.h5')
+        remove_file(
+            pathlib.Path(f'{DATA_PROCESSED_DIR}/{OUTPUT_FILE_WITHOUT_EXT}.csv'))
+        remove_file(
+            pathlib.Path(f'{DATA_PROCESSED_DIR}/{OUTPUT_FILE_WITHOUT_EXT}.h5'))
     finally:
         if not args.skip_cleanup:
-            if not remove_dir(temp_dir):
-                return
+            remove_dir(temp_dir)
 
 
 if __name__ == "__main__":
