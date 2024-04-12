@@ -17,6 +17,7 @@ import argparse
 from typing import List
 import pandas as pd
 
+import fix_and_validate_data
 
 if os.environ.get('CDF_LIB', '') == '':
     print('No CDF_LIB environment variable found for CDF file processing.')
@@ -192,10 +193,6 @@ def merge_dfs(dfs: List[pd.DataFrame]) -> pd.DataFrame:
     return df
 
 
-def filter_data(df: pd.DataFrame) -> None:
-    df.query("time >= '2023-09-01'", inplace=True)
-
-
 def save_csv_data(df: pd.DataFrame, target_dir: pathlib.Path, file_without_ext: pathlib.Path):
     df.to_csv(f'{target_dir}/{file_without_ext}.csv', index=False)
 
@@ -252,7 +249,10 @@ def pipeline(args: argparse.Namespace | None = None):
 
         if args.merge:
             df = merge_dfs(dfs)
-            filter_data(df)
+            df = fix_and_validate_data.fix_df(df)
+
+            fix_and_validate_data.verify_df(df)
+
             save_csv_data(df, DATA_PROCESSED_DIR, OUTPUT_FILE_WITHOUT_EXT)
 
         print("SUCCESS")
