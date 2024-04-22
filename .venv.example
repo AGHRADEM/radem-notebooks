@@ -1,6 +1,6 @@
 # FTP server credentials to download the raw data
 FTP_USER=
-FTP_PASSORD=
+FTP_PASSWORD=
 
 # InfluxDB Token to read/write given database
 INFLUXDB_TOKEN=
