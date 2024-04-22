@@ -5,3 +5,6 @@ __pycache__
 # Data and build folders
 data
 data_*
+
+# .env
+.env
