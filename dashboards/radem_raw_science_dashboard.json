@@ -53,6 +53,526 @@
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 16,
+      "interval": "1m",
+      "maxDataPoints": 30000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdgoiq6hbfgg0c"
+          },
+          "groupBy": [
+            {
+              "params": ["$__interval"],
+              "type": "time"
+            },
+            {
+              "params": ["channel::tag"],
+              "type": "tag"
+            },
+            {
+              "params": ["null"],
+              "type": "fill"
+            }
+          ],
+          "measurement": "my_measurement",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"dd\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": ["value"],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "event_type::tag",
+              "operator": "=",
+              "value": "p"
+            }
+          ]
+        }
+      ],
+      "title": "Directional - this month",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdgoiq6hbfgg0c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "Counts",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 17,
+      "interval": "1m",
+      "maxDataPoints": 30000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdgoiq6hbfgg0c"
+          },
+          "groupBy": [
+            {
+              "params": ["$__interval"],
+              "type": "time"
+            },
+            {
+              "params": ["channel::tag"],
+              "type": "tag"
+            },
+            {
+              "params": ["null"],
+              "type": "fill"
+            }
+          ],
+          "measurement": "my_measurement",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"heavy_ions\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": ["value"],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "event_type::tag",
+              "operator": "=",
+              "value": "p"
+            }
+          ]
+        }
+      ],
+      "title": "Heavy Ions - this month",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdgoiq6hbfgg0c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "Counts",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 18,
+      "interval": "1m",
+      "maxDataPoints": 30000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdgoiq6hbfgg0c"
+          },
+          "groupBy": [
+            {
+              "params": ["$__interval"],
+              "type": "time"
+            },
+            {
+              "params": ["channel::tag"],
+              "type": "tag"
+            },
+            {
+              "params": ["null"],
+              "type": "fill"
+            }
+          ],
+          "measurement": "my_measurement",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"protons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": ["value"],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "event_type::tag",
+              "operator": "=",
+              "value": "p"
+            }
+          ]
+        }
+      ],
+      "title": "Protons - this month",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdgoiq6hbfgg0c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "Counts",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 19,
+      "interval": "1m",
+      "maxDataPoints": 30000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdgoiq6hbfgg0c"
+          },
+          "groupBy": [
+            {
+              "params": ["$__interval"],
+              "type": "time"
+            },
+            {
+              "params": ["channel::tag"],
+              "type": "tag"
+            },
+            {
+              "params": ["null"],
+              "type": "fill"
+            }
+          ],
+          "measurement": "my_measurement",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"electrons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": ["value"],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "event_type::tag",
+              "operator": "=",
+              "value": "p"
+            }
+          ]
+        }
+      ],
+      "title": "Electrons - this month",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdgoiq6hbfgg0c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "Counts",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
               "log": 10,
               "type": "log"
             },
@@ -83,7 +603,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"1\", event_type=\"p\"}"
+              "options": "value 1"
             },
             "properties": [
               {
@@ -95,7 +615,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"2\", event_type=\"p\"}"
+              "options": "value 2"
             },
             "properties": [
               {
@@ -107,7 +627,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"3\", event_type=\"p\"}"
+              "options": "value 3"
             },
             "properties": [
               {
@@ -119,7 +639,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"4\", event_type=\"p\"}"
+              "options": "value 4"
             },
             "properties": [
               {
@@ -131,7 +651,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"5\", event_type=\"p\"}"
+              "options": "value 5"
             },
             "properties": [
               {
@@ -143,7 +663,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"6\", event_type=\"p\"}"
+              "options": "value 6"
             },
             "properties": [
               {
@@ -155,7 +675,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"7\", event_type=\"p\"}"
+              "options": "value 7"
             },
             "properties": [
               {
@@ -167,7 +687,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"8\", event_type=\"p\"}"
+              "options": "value 8"
             },
             "properties": [
               {
@@ -179,7 +699,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"9\", event_type=\"p\"}"
+              "options": "value 9"
             },
             "properties": [
               {
@@ -191,10 +711,10 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 10,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 10
       },
       "id": 4,
       "interval": "1m",
@@ -219,36 +739,28 @@
           },
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "channel::tag"
-              ],
+              "params": ["channel::tag"],
               "type": "tag"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"my_measurement\" and\r\n    r.event_type == \"p\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"protons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -332,7 +844,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"1\", event_type=\"e\"}"
+              "options": "value 1"
             },
             "properties": [
               {
@@ -344,7 +856,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"2\", event_type=\"e\"}"
+              "options": "value 2"
             },
             "properties": [
               {
@@ -356,7 +868,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"3\", event_type=\"e\"}"
+              "options": "value 3"
             },
             "properties": [
               {
@@ -368,7 +880,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"4\", event_type=\"e\"}"
+              "options": "value 4"
             },
             "properties": [
               {
@@ -380,7 +892,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"5\", event_type=\"e\"}"
+              "options": "value 5"
             },
             "properties": [
               {
@@ -392,7 +904,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"6\", event_type=\"e\"}"
+              "options": "value 6"
             },
             "properties": [
               {
@@ -404,7 +916,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"7\", event_type=\"e\"}"
+              "options": "value 7"
             },
             "properties": [
               {
@@ -416,7 +928,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"8\", event_type=\"e\"}"
+              "options": "value 8"
             },
             "properties": [
               {
@@ -428,7 +940,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"9\", event_type=\"e\"}"
+              "options": "value 9"
             },
             "properties": [
               {
@@ -440,10 +952,10 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 10,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 10
       },
       "id": 12,
       "interval": "1m",
@@ -468,36 +980,28 @@
           },
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "channel::tag"
-              ],
+              "params": ["channel::tag"],
               "type": "tag"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"my_measurement\" and\r\n    r.event_type == \"e\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"electrons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -580,7 +1084,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"1\", event_type=\"p\"}"
+              "options": "value 1"
             },
             "properties": [
               {
@@ -592,7 +1096,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"2\", event_type=\"p\"}"
+              "options": "value 2"
             },
             "properties": [
               {
@@ -604,7 +1108,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"3\", event_type=\"p\"}"
+              "options": "value 3"
             },
             "properties": [
               {
@@ -616,7 +1120,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"4\", event_type=\"p\"}"
+              "options": "value 4"
             },
             "properties": [
               {
@@ -628,7 +1132,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"5\", event_type=\"p\"}"
+              "options": "value 5"
             },
             "properties": [
               {
@@ -640,7 +1144,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"6\", event_type=\"p\"}"
+              "options": "value 6"
             },
             "properties": [
               {
@@ -652,7 +1156,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"7\", event_type=\"p\"}"
+              "options": "value 7"
             },
             "properties": [
               {
@@ -664,7 +1168,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"8\", event_type=\"p\"}"
+              "options": "value 8"
             },
             "properties": [
               {
@@ -676,7 +1180,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"9\", event_type=\"p\"}"
+              "options": "value 9"
             },
             "properties": [
               {
@@ -688,10 +1192,10 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 10,
         "w": 12,
         "x": 0,
-        "y": 13
+        "y": 20
       },
       "id": 10,
       "interval": "1m",
@@ -716,36 +1220,28 @@
           },
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "channel::tag"
-              ],
+              "params": ["channel::tag"],
               "type": "tag"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"my_measurement\" and\r\n    r.event_type == \"p\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"protons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -765,146 +1261,6 @@
       ],
       "timeShift": "1M",
       "title": "Protons - last month",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "cdgoiq6hbfgg0c"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "red",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": true,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "Counts",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "log": 10,
-              "type": "log"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 12,
-        "x": 12,
-        "y": 13
-      },
-      "id": 13,
-      "interval": "1m",
-      "maxDataPoints": 30000,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "cdgoiq6hbfgg0c"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "channel::tag"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "my_measurement",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"my_measurement\" and\r\n    r.event_type == \"d\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "event_type::tag",
-              "operator": "=",
-              "value": "p"
-            }
-          ]
-        }
-      ],
-      "title": "Directional - this month",
       "type": "timeseries"
     },
     {
@@ -969,7 +1325,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"1\", event_type=\"p\"}"
+              "options": "value 1"
             },
             "properties": [
               {
@@ -981,7 +1337,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"2\", event_type=\"p\"}"
+              "options": "value 2"
             },
             "properties": [
               {
@@ -993,7 +1349,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"3\", event_type=\"p\"}"
+              "options": "value 3"
             },
             "properties": [
               {
@@ -1005,7 +1361,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"4\", event_type=\"p\"}"
+              "options": "value 4"
             },
             "properties": [
               {
@@ -1017,7 +1373,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"5\", event_type=\"p\"}"
+              "options": "value 5"
             },
             "properties": [
               {
@@ -1029,7 +1385,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"6\", event_type=\"p\"}"
+              "options": "value 6"
             },
             "properties": [
               {
@@ -1041,7 +1397,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"7\", event_type=\"p\"}"
+              "options": "value 7"
             },
             "properties": [
               {
@@ -1053,7 +1409,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"8\", event_type=\"p\"}"
+              "options": "value 8"
             },
             "properties": [
               {
@@ -1065,7 +1421,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "value {channel=\"9\", event_type=\"p\"}"
+              "options": "value 9"
             },
             "properties": [
               {
@@ -1077,12 +1433,12 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 10,
         "w": 12,
-        "x": 0,
-        "y": 26
+        "x": 12,
+        "y": 20
       },
-      "id": 11,
+      "id": 20,
       "interval": "1m",
       "maxDataPoints": 30000,
       "options": {
@@ -1105,36 +1461,160 @@
           },
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "channel::tag"
-              ],
+              "params": ["channel::tag"],
               "type": "tag"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"my_measurement\" and\r\n    r.event_type == \"p\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"electrons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "event_type::tag",
+              "operator": "=",
+              "value": "p"
+            }
+          ]
+        }
+      ],
+      "timeShift": "1M",
+      "title": "Electrons- last month",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "cdgoiq6hbfgg0c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "red",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": true,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "Counts",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "log"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 30
+      },
+      "id": 11,
+      "interval": "1m",
+      "maxDataPoints": 30000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "cdgoiq6hbfgg0c"
+          },
+          "groupBy": [
+            {
+              "params": ["$__interval"],
+              "type": "time"
+            },
+            {
+              "params": ["channel::tag"],
+              "type": "tag"
+            },
+            {
+              "params": ["null"],
+              "type": "fill"
+            }
+          ],
+          "measurement": "my_measurement",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"protons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1215,122 +1695,13 @@
           },
           "unit": "none"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"1\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 1"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"2\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 2"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"3\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 3"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"4\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 4"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"5\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 5"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"6\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 6"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"7\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 7"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"8\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 8"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "value {channel=\"9\", event_type=\"p\"}"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Ch. 9"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 37
       },
       "id": 14,
       "interval": "1m",
@@ -1340,7 +1711,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "right",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "multi",
@@ -1355,36 +1726,28 @@
           },
           "groupBy": [
             {
-              "params": [
-                "$__interval"
-              ],
+              "params": ["$__interval"],
               "type": "time"
             },
             {
-              "params": [
-                "channel::tag"
-              ],
+              "params": ["channel::tag"],
               "type": "tag"
             },
             {
-              "params": [
-                "null"
-              ],
+              "params": ["null"],
               "type": "fill"
             }
           ],
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"my_measurement\" and\r\n    r.event_type == \"p\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"protons\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
-                "params": [
-                  "value"
-                ],
+                "params": ["value"],
                 "type": "field"
               },
               {
@@ -1419,8 +1782,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "RADEM",
+  "title": "RADEM - Raw Science",
   "uid": "bdhr2sl11a2gwa",
-  "version": 8,
+  "version": 15,
   "weekStart": ""
 }
