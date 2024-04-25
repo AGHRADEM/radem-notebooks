@@ -9,3 +9,6 @@ private
 
 # .env
 .env
+
+# Python environments
+venv
