@@ -13,11 +13,11 @@ matplotlib = "^3.8.3"
 spacepy = "^0.5.0"
 plotly = "^5.19.0"
 ipympl = "^0.9.4"
-
+python-dotenv = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.3"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
