@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-DATA_RAW_DIR="../data_raw"
+
+# Build required folder structure
+mkdir -p ../data
+mkdir -p ../data/{raw, extracted, csv}
+
+DATA_RAW_DIR="../data/raw"
 
 # Load environment variables
 export $(grep -v '^#' ../.env | xargs)
