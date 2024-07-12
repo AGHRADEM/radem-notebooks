@@ -3,7 +3,7 @@ __pycache__
 .ipynb_checkpoints
 
 # Data and build folders
-data
+data*
 data/**/*
 private
 
