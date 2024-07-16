@@ -3,7 +3,9 @@
 
 # Build required folder structure
 mkdir -p ../data
-mkdir -p ../data/{raw, extracted, csv}
+mkdir -p ../data/raw
+mkdir -p ../data/extracted
+mkdir -p ../data/csv
 
 DATA_RAW_DIR="../data/raw"
 
