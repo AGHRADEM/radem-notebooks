@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 8,
+  "id": 9,
   "links": [],
   "panels": [
     {
@@ -150,7 +150,7 @@
       },
       "id": 4,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -186,7 +186,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d1\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d1\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -342,7 +342,7 @@
       },
       "id": 23,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -378,7 +378,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d2\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d2\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -534,7 +534,7 @@
       },
       "id": 24,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -570,7 +570,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d3\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d3\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -726,7 +726,7 @@
       },
       "id": 21,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -762,7 +762,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d1\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d1\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -919,7 +919,7 @@
       },
       "id": 27,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -955,7 +955,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d2\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d2\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1112,7 +1112,7 @@
       },
       "id": 25,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1148,7 +1148,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d3\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d3\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1305,7 +1305,7 @@
       },
       "id": 22,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1341,7 +1341,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d1\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d1\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1498,7 +1498,7 @@
       },
       "id": 28,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1534,7 +1534,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d2\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d2\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1691,7 +1691,7 @@
       },
       "id": 26,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1727,7 +1727,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d3\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_d3\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -1806,7 +1806,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -1883,7 +1884,7 @@
       },
       "id": 29,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -1919,7 +1920,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_coin\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_coin\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2074,7 +2075,7 @@
       },
       "id": 30,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -2110,7 +2111,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_coin\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_coin\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2266,7 +2267,7 @@
       },
       "id": 31,
       "interval": "1m",
-      "maxDataPoints": 30000,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [],
@@ -2302,7 +2303,7 @@
           "measurement": "my_measurement",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "from(bucket: \"radem\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_coin\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: mean)",
+          "query": "import \"date\"\r\nfrom(bucket: \"radem\")\r\n  |> range(start: date.sub(d: 10m, from: v.timeRangeStart), stop:date.add(d: 10m, to: v.timeRangeStop))\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"irem_coin\"\r\n  )\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: true)",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -2338,13 +2339,13 @@
     "list": []
   },
   "time": {
-    "from": "now-1M",
-    "to": "now"
+    "from": "2024-02-19T13:58:11.190Z",
+    "to": "2024-03-08T13:06:53.046Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "IREM - Raw Science",
   "uid": "bdhr2sl11a2gasd",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
