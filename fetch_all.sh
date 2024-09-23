@@ -10,9 +10,9 @@ cd ..
 # ./0_fetch_data.sh
 # cd ..
 
-# echo "============= FETCHING KERNELS =============" 
-# cd kernel
-# ./0_fetch_data.sh
-# cd ..
+echo "============= FETCHING KERNELS =============" 
+cd kernel
+./0_fetch_data.sh
+cd ..
 
 echo ok
