@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "============= INSTALL REQUIREMENTS ============="
+python3 -m pip install -r requirements.txt
+
 echo "============= FETCHING DATA =============" 
 ./fetch_all.sh
 
