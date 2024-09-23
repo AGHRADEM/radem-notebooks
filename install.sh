@@ -3,6 +3,16 @@
 echo "============= INSTALL REQUIREMENTS ============="
 python3 -m pip install -r requirements.txt
 
+echo "============= INSTALL CDF UTILS ============="
+mkdir -p opt
+cd opt
+wget https://spdf.gsfc.nasa.gov/pub/software/cdf/dist/cdf39_1/linux/cdf39_1-dist-cdf.tar.gz
+tar -xvf cdf39_1-dist-cdf.tar.gz
+rm cdf39_1-dist-cdf.tar.gz
+cd cdf39_1-dist
+make OS=linux ENV=gnu all
+cd ../..
+
 echo "============= FETCHING DATA =============" 
 ./fetch_all.sh
 
