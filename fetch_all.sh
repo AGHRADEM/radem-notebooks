@@ -2,7 +2,7 @@
 
 echo "============= FETCHING RADEM =============" 
 cd processing
-./0_fetch_data.sh
+./0_fetching_ftp.sh
 cd ..
 
 echo "============= FETCHING IREM =============" 
